@@ -9,4 +9,4 @@ Restaurant Menu
 
 ALL `http://localhost:4123/menu`
 
-returns list of menu categories which includes product, price and id
+returns list of menu categories which includes product, price, title and id
