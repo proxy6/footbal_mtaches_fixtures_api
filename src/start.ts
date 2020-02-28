@@ -8,7 +8,7 @@ import { MenuController } from './menu-controller';
 app.all('/menu', MenuController.get);
 
 app.use((err: any, req: express.Request, res: express.Response, next: Function ) => {
-    res.json(`got here: ${err}`);
+    res.json(`got error: ${err}`);
 });
 
 app.listen(port, () => {
