@@ -7,6 +7,6 @@ Restaurant Menu
 
 ### Endpoints
 
-ALL `/menu`
+ALL `http://localhost:4123/menu`
 
 returns list of menu categories which includes product, price and id
