@@ -324,30 +324,76 @@
 					"response": []
 				},
 				{
-					"name": "View Fixture By link",
+					"name": "Get  Pending Fixtures",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"62d5d2cbfafb21b50b5d81c1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "https://localhost:{{PORT}}/fixture/77ac9327-015b-4435-ac99-83bb8d8d1469",
-							"protocol": "https",
+							"raw": "http://localhost:5005/fixture/pending",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "{{PORT}}",
+							"port": "5005",
 							"path": [
 								"fixture",
-								"77ac9327-015b-4435-ac99-83bb8d8d1469"
+								"pending"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get  Pending Fixtures",
+					"name": "View Fixture By link",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{PORT}}/fixture/unique/ddb4cf1123a0476b96bdccf0fa04fec6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"fixture",
+								"unique",
+								"ddb4cf1123a0476b96bdccf0fa04fec6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get completed fixtures",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{PORT}}/fixture/completed/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"fixture",
+								"completed",
+								""
+							]
+						}
 					},
 					"response": []
 				}
@@ -366,6 +412,10 @@
 		{
 			"key": "teamId",
 			"value": "62d5bc8262e8fc0f72ea6c3a"
+		},
+		{
+			"key": "uniqueLinkId",
+			"value": "69f19e2096e04c44819326046d0b5684"
 		}
 	]
 }

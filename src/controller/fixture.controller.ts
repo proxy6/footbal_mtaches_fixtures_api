@@ -7,7 +7,9 @@ import FixtureLink from '../model/fixture_link.model'
 export const createFixture = async(req: Request, res: Response)=>{
     let {home_team, away_team, season, userId, matchtime} = req.body
     let id = uuidv4()
-    let link = `https://${req.headers.host}${req.baseUrl}/${id}`
+    let str = id.replace(/-/g, '')
+    console.log(str)
+    let link = `https://${req.headers.host}${req.baseUrl}/${str}`
     try{
         let fixture = new Fixture({
             home_team:home_team,
@@ -22,12 +24,12 @@ export const createFixture = async(req: Request, res: Response)=>{
          const fixtureId = fixture._id.toHexString();
         let fixture_link = new FixtureLink({
             fixture: fixtureId,
-            link: link,
+            link: str,
             created_by: userId
         })
         console.log(fixture_link)
         await fixture_link.save()
-        res.status(201).json({message: "fixture created", data:{unque_link: fixture_link.link}})
+        res.status(201).json({message: "fixture created", data:{fixure:fixture, unque_link:link}})
     }catch(e){
         res.status(500).json({message: "Error Creating Fixture"})
     }
@@ -35,12 +37,15 @@ export const createFixture = async(req: Request, res: Response)=>{
 }
 export const viewFixtureByUniqueLink = async(req: Request, res: Response)=>{
     let uniqueLink = req.params.uniqueLink
-    console.log(req.params)
-    // try{
-    //     let fixture = await FixtureLink.findOne({})
-    // }catch(e){
-    //     res.status(500).json({message: "Error Fetching Fixture"})
-    // }
+    console.log(uniqueLink)
+    try{
+        let link = await FixtureLink.findOne({link: uniqueLink})
+        if(!link) return res.status(404).json({message: "No Record Found"})
+        let fixture = await Fixture.findOne({_id: link?.fixture})
+        res.status(201).json({message: "Record Retrieved", data: fixture})
+    }catch(e){
+        res.status(500).json({message: "Error Fetching Fixture"})
+    }
 }
 export const getAllFixtures = async(req: Request, res: Response)=>{
     try{
@@ -92,26 +97,7 @@ export const deleteFixture = async(req: Request, res: Response)=>{
     }
 }
 export const pendingFixture = async(req: Request, res: Response)=>{
-    //get current data and search db by matchtime
-    let {id} = req.body
-    let date = Date.now()
-    console.log(date)
-    let fixture = await Fixture.findOne({_id: id})
-    console.log(fixture?.matchtime)
-    res.send('done')
-
-    // try{
-    //     let date = Date.now()
-    //     console.log(date)
-    //     let fixture = await Fixture.find()
-    //     if(!fixture) return res.status(404).json({message: "No Record Found"})
-    //     fixture.forEach(data=>{
-    //         if(data.matchtime < date){
-    //             console.log(data.id)
-    //         }
-    //     })
-    //     return res.status(201).json({message: "Records Fetched", data: fixture})
-    // }catch(e){
-    //     res.status(500).json({message: "Error Fetching Record"})
-    // }
+ 
+}
+export const completedFixture = async(req: Request, res: Response)=>{
 }
