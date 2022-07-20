@@ -93,6 +93,13 @@ export const deleteFixture = async(req: Request, res: Response)=>{
 }
 export const pendingFixture = async(req: Request, res: Response)=>{
     //get current data and search db by matchtime
+    let {id} = req.body
+    let date = Date.now()
+    console.log(date)
+    let fixture = await Fixture.findOne({_id: id})
+    console.log(fixture?.matchtime)
+    res.send('done')
+
     // try{
     //     let date = Date.now()
     //     console.log(date)
