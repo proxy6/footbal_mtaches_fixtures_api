@@ -1,12 +1,9 @@
-# restaurant-menu
-Restaurant Menu
+# Football Fixtures API
 
-* Clone the repository using `git clone git@github.com:bestbrain10/restaurant-menu.git` 
+* Clone the repository using `git clone https://github.com/proxy6/footbal_mtaches_fixtures_api.git` 
 * After cloning run `npm i`
 * To start the application run `npm run start`
 
 ### Endpoints
 
-ALL `http://localhost:4123/menu`
-
-returns list of menu categories which includes product, price, title and id
+ALL `http://localhost:5005/`
