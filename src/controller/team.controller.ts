@@ -1,25 +1,20 @@
 import {Request, Response} from 'express'
-import Team from '../model/team.model'
+import TeamService from '../service/team.service'
+const service = new TeamService()
 export const addTeam = async(req: Request, res: Response)=>{
     let {name, short_name, stadium, userId} = req.body
     //write validation
     try{
-        const team = await Team.create({
-            name: name,
-            short_name: short_name,
-            stadium: stadium,
-            created_by: userId
-        })
-        res.status(201).json({message: "Team Created"})
+      const team = await service.CreateTeam({name, short_name, stadium, userId})
+      res.status(201).json({message: "Team Created", data: team})
     }catch(e){
         res.status(500).json({message: "Error Creating Teams"})
     }
 }
-
 export const viewAllTeams = async (req: Request, res: Response)=>{
     try{
-        let team = await Team.find({})
-        if(!team) res.status(404).json({message: "No Record found"})
+        let team = await service.ViewAllTeams()
+        if(!team) return res.status(404).json({message: "No Record found"})
         res.status(201).json({message: "Records Fetched", data:team})
     }catch(e){
         res.status(500).json({message: "Error Finding Teams"})
@@ -28,8 +23,8 @@ export const viewAllTeams = async (req: Request, res: Response)=>{
 export const viewSingleTeam = async (req: Request, res: Response)=>{
     let teamId = req.params.teamId
     try{
-        let team = await Team.findOne({_id: teamId})
-        if(!team) res.status(404).json({message: "No Record found"})
+        const team = await service.ViewSingleTeam({teamId})    
+        if(!team) return res.status(404).json({message: "No Record found"})
         res.status(201).json({message: "Record Fetched", data:team})
     }catch(e){
         res.status(500).json({message: "Error Finding Team"})
@@ -39,12 +34,9 @@ export const editTeam = async (req: Request, res: Response)=>{
     let {name, short_name, stadium} = req.body
     let teamId = req.params.teamId
     try{
-        let team = await Team.updateOne({_id: teamId}, {name, short_name, stadium})
-        if(team.matchedCount == 0){
-         res.status(404).json({message: "No Record found"})
-        }else{
+        let team = await service.EditTeam({name, short_name, stadium, teamId})
+        if(team.matchedCount == 0) return res.status(404).json({message: "No Record found"})
         res.status(201).json({message: "Record Edited"})
-        }
     }catch(e){
         res.status(500).json({message: "Error Updating Team"})
     }
@@ -52,13 +44,10 @@ export const editTeam = async (req: Request, res: Response)=>{
 export const deleteTeam = async (req: Request, res: Response)=>{
     let teamId = req.params.teamId
     try{
-        let team = await Team.deleteOne({_id: teamId})
-        if(team.deletedCount == 0){
-            res.status(404).json({message: "No Record found"})
-        }else{ 
-        res.status(201).json({message: "Record Deleted"})
-        }
-    }catch(e){
+        const team = await service.DeleteTeam({teamId})
+        if(team.deletedCount == 0) return res.status(404).json({message: "No Record found"})
+        res.status(201).json({message: "Record Deleted"})  
+        }catch(e){
         res.status(500).json({message: "Error Deleting Team"})
     }
 }

@@ -5,13 +5,11 @@ import { isAuthorized } from '../middleware/auth';
 const router = Router();
 router.post('/', createFixture)
 router.get('/', getAllFixtures)
-router.get('/completed',isAuthorized, completedFixture)
+router.get('/completed',isAuthorized('user'), completedFixture)
 router.post('/pending', pendingFixture)
 router.get('/:fixtureId', getSingleFixture)
 router.patch('/edit/:fixtureId', editFixture)
 router.delete('/delete/:fixtureId', deleteFixture)
-
-
 router.get('/unique/:uniqueLink', viewFixtureByUniqueLink)
 
 

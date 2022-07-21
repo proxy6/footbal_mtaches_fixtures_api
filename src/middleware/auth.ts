@@ -7,18 +7,20 @@ export interface CustomRequest extends Request {
  token: string | JwtPayload;
 }
 
-export const isAuthorized = async (req: Request, res: Response, next: NextFunction) => {
+export const isAuthorized = (...role: string[])=> async (req: Request, res: Response, next: NextFunction) => {
  try {
    const token = req.header('Authorization')?.replace('Bearer ', '');
 
-   if (!token) {
-     throw new Error();
-   }
-
+   if (!token) throw new Error();
    const decoded = jwt.verify(token, SECRET_KEY);
    (req as CustomRequest).token = decoded;
-   console.log(decoded)
+   console.log(!role.length)
+   console.log(role.includes((decoded as JwtPayload).data.role))
+   if(role.length || role.includes((decoded as JwtPayload).data.role)){
    next();
+   }else{
+    res.status(401).send('User is not Authorized');
+   }
  } catch (err) {
    res.status(401).send('Please authenticate');
  }
